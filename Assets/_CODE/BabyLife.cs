@@ -19,6 +19,11 @@ public class BabyLife : MonoBehaviour
         {
             Life -= 50;
         }
+
+        if (col.gameObject.tag == "Toy")
+        {
+            Life += 50;
+        }
     }
 
     void Update()
