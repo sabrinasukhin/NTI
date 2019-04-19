@@ -9,12 +9,14 @@ public class RobotMove : MonoBehaviour
     public float moveSpeed = 5f;
 
     private bool facingRight;
+    private bool isHolding;
 
     public GameObject robotSprite;
 
     void Start()
     {
         facingRight = true;
+        isHolding = false;
     }
 
     void Update()
@@ -31,29 +33,33 @@ public class RobotMove : MonoBehaviour
 
     void FixedUpdate()
     {
-        /*if (Input.GetKey("d"))
+        if (Input.GetKey(KeyCode.D))
         {
             facingRight = true;
-            //gameObject.transform.Translate(Vector3.left * Time.deltaTime * moveSpeed);
-            rb.velocity = Vector3.right * moveSpeed;
         }
-        if (Input.GetKey("a"))
+        if (Input.GetKey(KeyCode.A))
         {
             facingRight = false;
-            //gameObject.transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
-            rb.velocity = Vector3.left * moveSpeed;
-            Debug.Log(rb.velocity);
         }
-        if (Input.GetKey("s"))
+
+        if (Input.GetKey(KeyCode.E) && isHolding)
         {
-            //gameObject.transform.Translate(Vector3.up * Time.deltaTime * moveSpeed);
-            rb.velocity = Vector3.down * moveSpeed;
+
         }
-        if (Input.GetKey("w"))
-        {
-            //gameObject.transform.Translate(Vector3.down * Time.deltaTime * moveSpeed);
-            rb.velocity = Vector3.up * moveSpeed;
-        }*/
+
         rb.velocity = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")) * moveSpeed;
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.tag == "Hazard" || other.gameObject.tag == "Toy")
+        {
+            if (Input.GetKey(KeyCode.E))
+            {
+                other.transform.parent = transform;
+                other.transform.localPosition = new Vector3(0.03f, 0, 2);
+                isHolding = true;
+            }
+        }
     }
 }
